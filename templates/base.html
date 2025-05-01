@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Lost & Found{% endblock %}</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .navbar {
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .navbar-brand {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #5c6bc0;
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-brand img {
+      width: 30px; /* Reduced logo size */
+      margin-right: 10px; /* Space between logo and text */
+    }
+
+    .navbar-dark .navbar-nav .nav-link {
+      font-size: 1.1rem;
+      color: #f1f1f1;
+      transition: color 0.3s;
+    }
+
+    .navbar-dark .navbar-nav .nav-link:hover {
+      color: #aab6fe;
+    }
+
+    .navbar-toggler-icon {
+      background-color: #fff;
+    }
+
+    .navbar-nav {
+      margin-left: auto;
+    }
+
+    .navbar-nav .nav-item + .nav-item {
+      margin-left: 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+    }
+
+    .alert {
+      margin-top: 20px;
+    }
+
+    main {
+      flex: 1;
+    }
+
+    footer {
+      background-color: #343a40;
+      color: #ffffff;
+      font-size: 1rem;
+      padding: 20px 0;
+    }
+
+    .footer-links a {
+      color: #ffffff;
+      margin-left: 15px;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: #aab6fe;
+    }
+
+    footer p {
+      margin-bottom: 0;
+    }
+
+    .footer-links {
+      margin-top: 5px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container">
+      {% load static %}
+      <a class="navbar-brand" href="{% url 'home' %}">
+        <img src="{% static 'images/lostandfound1.png' %}" alt="Lost and Found Logo">
+        Lost & Found
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <!-- Lost Items Section -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'lost_items:report_lost_item' %}">Report Lost Item</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'lost_items:search_lost_items' %}">Search Lost Items</a>
+          </li>
+
+          <!-- Found Items Section -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'found_items:report_found_item' %}">Report Found Item</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'found_items:search_found_items' %}">Search Found Items</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Messages -->
+  {% if messages %}
+  <div class="alert alert-success container mt-3">
+    {% for message in messages %}
+    <p class="mb-0">{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Main Content -->
+  <main class="container mt-4">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center">
+    <p>© 2025 Lost & Found System</p>
+    <div class="footer-links">
+      <a href="{% url 'about' %}">About</a>
+      <a href="{% url 'contact' %}">Contact</a>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

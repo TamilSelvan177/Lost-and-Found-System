@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Found</title>
+    <style>
+        /* Basic Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 2.8em;
+        }
+        h2 {
+            font-size: 1.8em;
+            color: #34495e;
+            margin-bottom: 10px;
+        }
+
+        /* Section Styling */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .item-info {
+            background-color: #ecf0f1;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .item-info p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+        .match-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .match-list li {
+            background-color: #fafafa;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+        }
+        .match-list li strong {
+            color: #2c3e50;
+        }
+        .match-list li p {
+            margin: 8px 0;
+        }
+
+        /* Button Styling */
+        a.button {
+            display: inline-block;
+            padding: 14px 28px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 1.2em;
+            margin-top: 30px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+        a.button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2.2em;
+            }
+            h2 {
+                font-size: 1.6em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Match Found for Your Lost Item</h1>
+</header>
+
+<div class="container">
+    <div class="item-info">
+        <h2>Lost Item Details:</h2>
+        <p><strong>Item Name:</strong> {{ lost_item.item_name }}</p>
+        <p><strong>Location:</strong> {{ lost_item.lost_location }}</p>
+    </div>
+
+    <h2>Matching Found Items:</h2>
+    {% if matched_found_items %}
+        <ul class="match-list">
+            {% for found_item in matched_found_items %}
+                <li>
+                    <p><strong>Found Item Name:</strong> {{ found_item.item_name }}</p>
+                    <p><strong>Location:</strong> {{ found_item.found_location }}</p>
+                    <p><strong>Found By:</strong> {{ found_item.user.username }}</p>
+                    <p><strong>Email:</strong> {{ found_item.user.email }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No matching items found.</p>
+    {% endif %}
+
+    <a href="{% url 'home' %}" class="button">Back to Home</a>
+</div>
+
+</body>
+</html>

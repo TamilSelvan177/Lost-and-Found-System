@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Match Found</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 1.8em;
+            color: #333;
+            margin-top: 20px;
+        }
+        .item-details {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        .item-details strong {
+            font-weight: bold;
+        }
+        .matching-items ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .matching-items li {
+            background-color: #f9f9f9;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .matching-items li strong {
+            color: #4CAF50;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-link:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Match Found for Your {{ type }} Item</h1>
+    </header>
+
+    <div class="container">
+        {% if type == 'Lost' %}
+            <h2>Lost Item:</h2>
+            <div class="item-details">
+                <p><strong>Item Name:</strong> {{ lost_item.item_name }}</p>
+                <p><strong>Location:</strong> {{ lost_item.lost_location }}</p>
+            </div>
+        {% else %}
+            <h2>Found Item:</h2>
+            <div class="item-details">
+                <p><strong>Item Name:</strong> {{ found_item.item_name }}</p>
+                <p><strong>Location:</strong> {{ found_item.found_location }}</p>
+            </div>
+        {% endif %}
+
+        <h2>Matching {{ type }} Items:</h2>
+
+        <div class="matching-items">
+            {% if matched_lost_items %}
+                <ul>
+                    {% for item in matched_lost_items %}
+                        <li>
+                            <p><strong>Item Name:</strong> {{ item.item_name }}</p>
+                            <p><strong>Location:</strong> {{ item.lost_location }}</p>
+                            <p><strong>Reported By:</strong> {{ item.user }}</p>
+                            <p><strong>Contact:</strong> {{ item.user.email }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No matching items found.</p>
+            {% endif %}
+        </div>
+
+        <a href="{% url 'home' %}" class="back-link">Back to Home</a>
+    </div>
+</body>
+</html>

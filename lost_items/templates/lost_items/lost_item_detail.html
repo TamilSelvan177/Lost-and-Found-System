@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Lost Item Detail{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-header text-center bg-primary text-white">
+            <h3>{{ lost_item.item_name }}</h3>
+        </div>
+        <div class="card-body">
+            <!-- Item Description -->
+            <div class="mb-3">
+                <h5>Description:</h5>
+                <p>{{ lost_item.description }}</p>
+            </div>
+
+            <!-- Item Image Preview -->
+            {% if lost_item.image %}
+                <div class="text-center my-4">
+                    <img src="{{ lost_item.image.url }}" alt="{{ lost_item.item_name }}" class="img-fluid rounded shadow-lg" style="max-height: 400px; object-fit: cover;">
+                </div>
+            {% else %}
+                <p class="text-center text-muted">No image available.</p>
+            {% endif %}
+
+            <!-- Item Details -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Category:</h5>
+                    <p>{{ lost_item.get_category_display }}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Lost Date:</h5>
+                    <p>{{ lost_item.lost_date }}</p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Lost Location:</h5>
+                    <p>{{ lost_item.lost_location }}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Reported by:</h5>
+                    <p>{{ lost_item.user.username }}</p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Email:</h5>
+                    <p>{{ lost_item.user.email }}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Date Reported:</h5>
+                    <p>{{ lost_item.created_at }}</p>
+                </div>
+            </div>
+
+            <!-- Status Display -->
+            <div class="mb-4">
+                <h5>Status:</h5>
+                <p class="status {% if lost_item.is_resolved %}resolved{% else %}unresolved{% endif %}">
+                    {% if lost_item.is_resolved %}
+                        <span class="badge bg-success">Resolved</span>
+                    {% else %}
+                        <span class="badge bg-danger">Unresolved</span>
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Mark as Resolved/Unresolved Button -->
+            {% if user == lost_item.user %}
+                <form method="post" action="{% url 'lost_items:toggle_lost_status' lost_item.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning w-100 py-2">
+                        {% if lost_item.is_resolved %}
+                            Mark as Unresolved
+                        {% else %}
+                            Mark as Resolved
+                        {% endif %}
+                    </button>
+                </form>
+            {% else %}
+                <div class="alert alert-info text-center mt-4">
+                    Only the person who reported this item can change its status.
+                </div>
+            {% endif %}
+
+            <!-- Back to Home Link -->
+            <a href="{% url 'home' %}" class="btn btn-link d-block mt-3 text-center">Back to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

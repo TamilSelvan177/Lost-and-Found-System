@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Found Item Detail{% endblock %}
+
+{% block content %}
+<style>
+    .custom-alert {
+        padding: 12px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-weight: 500;
+        text-align: center;
+    }
+
+    .custom-alert-success {
+        color: #0f5132;
+        background-color: #d1e7dd;
+        border: 1px solid #badbcc;
+    }
+
+    .custom-alert-error {
+        color: #842029;
+        background-color: #f8d7da;
+        border: 1px solid #f5c2c7;
+    }
+</style>
+
+<div class="container mt-5">
+    <!-- Flash Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="custom-alert {% if message.tags == 'error' %}custom-alert-error{% else %}custom-alert-success{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card shadow-lg border-0">
+        <div class="card-header text-center bg-success text-white">
+            <h3>{{ found_item.item_name }}</h3>
+        </div>
+        <div class="card-body">
+            <!-- Item Description -->
+            <div class="mb-3">
+                <h5>Description:</h5>
+                <p>{{ found_item.description }}</p>
+            </div>
+
+            <!-- Item Image Preview -->
+            {% if found_item.image %}
+                <div class="text-center my-4">
+                    <img src="{{ found_item.image.url }}" alt="{{ found_item.item_name }}" class="img-fluid rounded shadow-lg" style="max-height: 400px; object-fit: cover;">
+                </div>
+            {% else %}
+                <p class="text-center text-muted">No image available.</p>
+            {% endif %}
+
+            <!-- Item Details -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Found Date:</h5>
+                    <p>{{ found_item.found_date }}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Found Location:</h5>
+                    <p>{{ found_item.found_location }}</p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Reported by:</h5>
+                    <p>{{ found_item.user.username }}</p>
+                </div>
+                <div class="col-md-6">
+                    <h5>Email:</h5>
+                    <p>{{ found_item.user.email }}</p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Date Reported:</h5>
+                    <p>{{ found_item.created_at }}</p>
+                </div>
+            </div>
+
+            <!-- Status Display -->
+            <div class="mb-4">
+                <h5>Status:</h5>
+                <p class="status {% if found_item.is_resolved %}resolved{% else %}unresolved{% endif %}">
+                    {% if found_item.is_resolved %}
+                        <span class="badge bg-success">Resolved</span>
+                    {% else %}
+                        <span class="badge bg-danger">Unresolved</span>
+                    {% endif %}
+                </p>
+            </div>
+
+            <!-- Mark as Resolved/Unresolved Button -->
+            {% if user == found_item.user %}
+                <form method="post" action="{% url 'found_items:toggle_found_status' found_item.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning w-100 py-2">
+                        {% if found_item.is_resolved %}
+                            Mark as Unresolved
+                        {% else %}
+                            Mark as Resolved
+                        {% endif %}
+                    </button>
+                </form>
+            {% else %}
+                <div class="alert alert-info text-center mt-4">
+                    Only the person who reported this item can change its status.
+                </div>
+            {% endif %}
+
+            <!-- Back to Home Link -->
+            <a href="{% url 'home' %}" class="btn btn-link d-block mt-3 text-center">Back to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,152 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Lost & Found Admin{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #ecf0f3;
+        margin: 0;
+    }
+
+    /* HEADER */
+    #header {
+        background: linear-gradient(to right, #2c3e50, #2980b9);
+        padding: 15px;
+    }
+
+    #custom-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    #custom-header img {
+        height: 45px;
+        border-radius: 10px;
+    }
+
+    #custom-header h1 {
+        font-size: 24px;
+        color: white;
+        margin: 0;
+    }
+
+    #user-tools, .nav-global a {
+        color: #ecf0f1 !important;
+    }
+
+    #site-name a {
+        color: white;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    /* SIDEBAR */
+    #nav-sidebar {
+        background: #34495e;
+        color: white;
+        padding: 20px;
+        margin: 15px;
+        border-radius: 10px;
+    }
+
+    #nav-sidebar h3 {
+        font-size: 18px;
+        color: #f1c40f;
+        margin-bottom: 10px;
+    }
+
+    #nav-sidebar .app-list a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #ecf0f1;
+        padding: 8px 12px;
+        margin-bottom: 8px;
+        border-radius: 6px;
+        transition: background 0.2s ease;
+        text-decoration: none;
+    }
+
+    #nav-sidebar .app-list a:hover {
+        background-color: #1abc9c;
+        transform: scale(1.01);
+    }
+
+    /* MAIN CONTENT */
+    #content {
+        background-color: #03386c;
+        margin: 15px;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .dashboard-card {
+        background: rgb(33, 35, 132);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        transition: all 0.2s ease-in-out;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+    }
+
+    .dashboard-card h2 {
+        margin-top: 0;
+        font-size: 20px;
+        color: #2c3e50;
+    }
+
+    .dashboard-card p {
+        color: #555;
+        font-size: 14px;
+    }
+
+    /* FOOTER */
+    #footer {
+        text-align: center;
+        padding: 10px;
+        font-size: 13px;
+        color: #95a5a6;
+        margin-top: 30px;
+    }
+</style>
+{% endblock %}
+
+{% block branding %}
+<div id="custom-header">
+    {% load static %}   
+    <img src="{% static 'images/lostandfound1.png' %}" alt="Lost and Found Logo">
+    <h1 id="site-name">
+        <a href="{% url 'admin:index' %}">Lost & Found Admin Panel</a>
+    </h1>
+</div>
+{% endblock %}
+
+{% block nav-global %}
+<ul class="nav-global">
+    <li><a href="/">← Back to Main Site</a></li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-card">
+    <h2>Welcome to Lost & Found Admin</h2>
+    <p>Manage users, lost items, and found items from here.</p>
+</div>
+
+<div class="dashboard-card">
+    <h2>Quick Stats (Optional)</h2>
+    <p>You can later add number of items, active users, etc. here with Django context.</p>
+</div>
+
+{{ block.super }}
+{% endblock %}

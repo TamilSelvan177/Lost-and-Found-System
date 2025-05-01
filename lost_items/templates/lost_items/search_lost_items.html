@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 40px auto; background: #fff7f0; padding: 30px; border-radius: 12px; box-shadow: 0 0 12px rgba(0,0,0,0.1); font-family: 'Segoe UI', sans-serif;">
+    <h2 style="text-align: center; color: #cc5500; margin-bottom: 30px;">🔍 Search Lost Items</h2>
+
+    <form method="get" action="{% url 'lost_items:search_lost_items' %}" style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; margin-bottom: 30px;">
+        <input type="text" name="q" placeholder="🔎 Search by item name" value="{{ query }}"
+            style="padding: 10px; border-radius: 6px; border: 1px solid #ccc; flex: 1 1 250px;">
+
+        <select name="status" style="padding: 10px; border-radius: 6px; border: 1px solid #ccc; flex: 1 1 180px;">
+            <option value="">All Status</option>
+            <option value="resolved" {% if status == "resolved" %}selected{% endif %}>Resolved</option>
+            <option value="unresolved" {% if status == "unresolved" %}selected{% endif %}>Unresolved</option>
+        </select>
+
+        <input type="text" name="category" placeholder="📂 Category" value="{{ category }}"
+            style="padding: 10px; border-radius: 6px; border: 1px solid #ccc; flex: 1 1 180px;">
+
+        <input type="date" name="start_date" value="{{ start_date }}"
+            style="padding: 10px; border-radius: 6px; border: 1px solid #ccc; flex: 1 1 180px;" placeholder="From Date">
+
+        <input type="date" name="end_date" value="{{ end_date }}"
+            style="padding: 10px; border-radius: 6px; border: 1px solid #ccc; flex: 1 1 180px;" placeholder="To Date">
+
+        <button type="submit"
+            style="padding: 10px 20px; background-color: #ff6600; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+            🔎 Search
+        </button>
+    </form>
+
+    <table style="width: 100%; border-collapse: collapse; background-color: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.07);">
+        <thead style="background-color: #ffe4c4;">
+            <tr>
+                <th style="padding: 12px; text-align: left;">📌 Item Name</th>
+                <th style="padding: 12px; text-align: left;">📝 Description</th>
+                <th style="padding: 12px; text-align: left;">📅 Date Lost</th>
+                <th style="padding: 12px; text-align: left;">✅ Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in lost_items %}
+            <tr style="border-bottom: 1px solid #eee;">
+                <td style="padding: 12px;">
+                    <a href="{% url 'lost_items:lost_item_detail' item.pk %}" style="color: #0077cc; font-weight: 600; text-decoration: none;">
+                        {{ item.item_name }}
+                    </a>
+                </td>
+                <td style="padding: 12px;">{{ item.description }}</td>
+                <td style="padding: 12px;">{{ item.lost_date }}</td>
+                <td style="padding: 12px;">
+                    {% if item.is_resolved %}
+                        <span style="background-color: #28a745; color: white; padding: 6px 12px; border-radius: 8px; font-size: 14px;">Resolved</span>
+                    {% else %}
+                        <span style="background-color: #dc3545; color: white; padding: 6px 12px; border-radius: 8px; font-size: 14px;">Unresolved</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="padding: 20px; text-align: center; color: #666;">No items found matching your search.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
